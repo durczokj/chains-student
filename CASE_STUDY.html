@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CASE_STUDY.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="case-study-product-code-families--demand-forecasting-continuity">Case Study: Product Code Families — Demand Forecasting Continuity</h1>
+<h2 id="1-business-background">1. Business Background</h2>
+<h3 id="the-problem">The Problem</h3>
+<p>Accurate <strong>demand forecasting</strong> is critical for any supply chain — it drives production planning, inventory management, and distribution. One of the most important inputs to a demand forecast is <strong>historical demand data</strong>. To predict how much of a product will sell next month, you need to know how much it sold in previous months.</p>
+<p>This sounds simple, but in practice there is a major obstacle: <strong>product code changes</strong>.</p>
+<h3 id="why-product-codes-change">Why Product Codes Change</h3>
+<p>Every product is identified by a numerical code. In this case study we work with two code types:</p>
+<ul>
+<li><strong>IPC</strong> — Internal Product Code (a company's internal identifier)</li>
+<li><strong>GTIN</strong> — Global Trade Item Number (the barcode number used in retail)</li>
+</ul>
+<p>These codes change frequently for a variety of reasons:</p>
+<ul>
+<li><strong>Reformulation</strong> — A shampoo's formula is improved, requiring a new code.</li>
+<li><strong>Repackaging</strong> — The same product moves from a 250ml to a 300ml bottle.</li>
+<li><strong>Regulatory changes</strong> — New labelling requirements force a code change.</li>
+<li><strong>Market restructuring</strong> — Two regional variants are merged into one product, or one product is split into two.</li>
+</ul>
+<p>When a code changes, the demand history attached to the old code becomes &quot;orphaned.&quot; The new code starts with zero history. From a forecasting perspective, the continuity is broken — the system sees a brand-new product with no past, when in reality it is the same (or very similar) product that has been selling for years.</p>
+<h3 id="the-solution-chains">The Solution: Chains</h3>
+<p>The idea is simple: when a product code changes, we record a <strong>chain</strong> — a link that says &quot;the new code is a continuation of the old code.&quot; By chaining codes together, we preserve the full demand history across all code changes.</p>
+<p>Without chains, every code change means starting from scratch — the forecasting system only sees the history of the current code. With chains, it can follow the links back through every predecessor and access years of continuous data:</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+
+    subgraph Case_1["Without chains"]
+        direction LR
+        A[1]
+    end
+
+    subgraph Case_2["With chains"]
+        direction LR
+        B[4] --> C[3] --> D[2] --> E[1]
+    end
+</div></code></pre>
+<h2 id="2-domain-concepts">2. Domain Concepts</h2>
+<h3 id="generation">Generation</h3>
+<p>A <strong>Generation</strong> is a single product code's lifespan — the period between its introduction and its discontinuation. It has a <code>code</code>, a <code>start_date</code>, and an <code>end_date</code> (or <code>9999-12-31</code> if still active).</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+    G["Code 1001<br/>2021-01-01 – 2023-06-01"]
+</div></code></pre>
+<p>A code can have multiple generations over time (introduced, discontinued, reintroduced later), but their time intervals must never overlap.</p>
+<h3 id="product-family">Product Family</h3>
+<p>A <strong>Product Family</strong> is the set of all generations connected through chain events. Because products can split and merge, the family forms a <strong>Directed Acyclic Graph (DAG)</strong> — each node is a generation and each edge is a chain link.</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+    subgraph "Product Family PL-IPC-0001"
+        direction LR
+        A["1001<br/>2021-01-01 – 2022-06-30"] --> B["1002<br/>2022-07-01 – 2024-03-31"]
+        B --> C["1003<br/>2024-04-01 – 9999-12-31"]
+    end
+</div></code></pre>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+    subgraph Split["Split"]
+        direction LR
+        A[A] --> B[B]
+        A --> C[C]
+    end
+
+    subgraph Merge["Merge"]
+        direction LR
+        D[D] --> F[F]
+        E[E] --> F
+    end
+</div></code></pre>
+<p>When forecasting demand for any code, the system looks up its family and aggregates the sales history of every generation in that family.</p>
+<h3 id="events-and-transitions">Events and Transitions</h3>
+<p>An <strong>Event</strong> is a business occurrence scoped to a single country. We work with five countries:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Country</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PL</code></td>
+<td>Poland</td>
+</tr>
+<tr>
+<td><code>DE</code></td>
+<td>Germany</td>
+</tr>
+<tr>
+<td><code>US</code></td>
+<td>United States</td>
+</tr>
+<tr>
+<td><code>JP</code></td>
+<td>Japan</td>
+</tr>
+<tr>
+<td><code>CN</code></td>
+<td>China</td>
+</tr>
+</tbody>
+</table>
+<p>Each event contains one or more <strong>Code Transitions</strong>. A transition has a <strong>date</strong>, a <strong>code type</strong> (<code>&quot;IPC&quot;</code> or <code>&quot;GTIN&quot;</code>), and a <strong>type</strong> — one of the three below:</p>
+<h4 id="introduction">Introduction</h4>
+<p>A new product code enters the market. Records <code>introduction_code</code>. After this event the code is <strong>active</strong>.</p>
+<h4 id="discontinuation">Discontinuation</h4>
+<p>An existing code is removed from the market. Records <code>discontinuation_code</code>. After this event the code is <strong>discontinued</strong>. You can only discontinue a code that is currently active.</p>
+<h4 id="chain">Chain</h4>
+<p>Two codes are linked — one replaces the other. Records both <code>introduction_code</code> (successor) and <code>discontinuation_code</code> (predecessor). This creates the edge in the family graph. Both codes must already exist in the system.</p>
+<h3 id="validation-rules">Validation Rules</h3>
+<p>The system enforces these business rules:</p>
+<ol>
+<li><strong>No double introduction</strong> — a code cannot be introduced while it already has an active generation.</li>
+<li><strong>No overlapping codes</strong> — time intervals for the same code must not overlap.</li>
+<li><strong>No inactive discontinuation</strong> – a code that is not active cannot be discontinued.</li>
+<li><strong>Chain requires valid codes</strong> — both codes in a chain must exist.</li>
+<li><strong>Chain codes must differ</strong> — a code cannot replace itself.</li>
+<li><strong>Valid references</strong> — country codes, code types, and dates must all be valid.</li>
+</ol>
+<h3 id="lookup-operations">Lookup Operations</h3>
+<p>Once families are computed, the system supports two lookups:</p>
+<p><strong>Resolve: Code + Code Type + Date + Country → Family</strong> — <em>&quot;What family does code X of type Y belong to on date D in country C?&quot;</em> Returns the product family identifier.</p>
+<p><strong>Reverse Resolve: Family + Date → Codes</strong> — <em>&quot;What codes are active in family F on date D?&quot;</em> Returns the list of active codes on that date.</p>
+<hr>
+<h2 id="3-data-model">3. Data Model</h2>
+<pre><code class="language-mermaid"><div class="mermaid">erDiagram
+    COUNTRY {
+        string code PK
+        string name
+    }
+
+    EVENT {
+        int id PK
+        string iso_country_code FK
+        string comment
+    }
+
+    CODE_TYPE {
+        string id PK
+        string type
+    }
+
+    CODE_TRANSITION {
+        int id PK
+        int event_id FK
+        string code_type_id FK
+        string type
+        date date
+    }
+
+    INTRODUCTION {
+        int id PK
+        int code_transition_id FK
+        bigint introduction_code
+    }
+
+    DISCONTINUATION {
+        int id PK
+        int code_transition_id FK
+        bigint discontinuation_code
+    }
+
+    CHAIN {
+        int id PK
+        int code_transition_id FK
+        bigint introduction_code
+        bigint discontinuation_code
+    }
+
+    PRODUCT_FAMILY {
+        int id PK
+        string code_type_id FK
+        string identifier
+        string iso_country_code FK
+    }
+
+    GENERATION {
+        int id PK
+        int product_family_id FK
+        int introduction_id FK
+        int discontinuation_id FK
+    }
+
+    GENERATION_LINK {
+        int id PK
+        int predecessor_id FK
+        int successor_id FK
+        int source_transition_id FK
+    }
+
+    COUNTRY ||--o{ EVENT : "has"
+    COUNTRY ||--o{ PRODUCT_FAMILY : "has"
+    EVENT ||--o{ CODE_TRANSITION : "has"
+    CODE_TYPE ||--o{ CODE_TRANSITION : "has"
+    CODE_TRANSITION ||--o| INTRODUCTION : "is"
+    CODE_TRANSITION ||--o| DISCONTINUATION : "is"
+    CODE_TRANSITION ||--o| CHAIN : "is"
+    CODE_TYPE ||--o{ PRODUCT_FAMILY : "has"
+    PRODUCT_FAMILY ||--o{ GENERATION : "has"
+    CODE_TRANSITION ||--o{ GENERATION : "introduction"
+    CODE_TRANSITION ||--o{ GENERATION : "discontinuation"
+    GENERATION ||--o{ GENERATION_LINK : "predecessor"
+    GENERATION ||--o{ GENERATION_LINK : "successor"
+    CODE_TRANSITION ||--o{ GENERATION_LINK : "source"
+</div></code></pre>
+<hr>
+<h2 id="4-your-task">4. Your Task</h2>
+<p>You will build a <strong>REST API</strong> that implements the Chains system. A provided <strong>test script</strong> will call your API and validate the results. Your API must pass all the tests to complete the assignment.</p>
+<h3 id="41-high-level-flow">4.1 High-Level Flow</h3>
+<p>The test script interacts with your API in three phases:</p>
+<pre class="hljs"><code><div>┌─────────────────────────────────────────────────────────┐
+│                    PHASE 0: SETUP                       │
+│  The test script calls POST /api/setup/.                │
+│  Your server must ensure that all required reference    │
+│  data (countries and code types from Section 2) exists  │
+│  in the database and return HTTP 200.                   │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                  PHASE 1: EVENT INGESTION               │
+│  The test script sends ~100 events (POST requests).     │
+│  Each event contains one or more code transitions.      │
+│  Some events are valid, some are deliberately invalid.  │
+│                                                         │
+│  Your API must:                                         │
+│   ✓ Accept valid events  → return HTTP 201              │
+│   ✗ Reject invalid events → return HTTP 400             │
+│                                                         │
+│  After all events are sent, the test triggers family    │
+│  recomputation via a POST to the recompute endpoint.    │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                PHASE 2: FAMILY QUERIES                  │
+│  The test script queries your API:                      │
+│                                                         │
+│  1. Resolve: code + date + country → family ID          │
+│     GET /api/resolve/?code=X&amp;code_type=T&amp;country=C&amp;date=D│
+│                                                         │
+│  2. Reverse: family ID + date → list of active codes    │
+│     GET /api/resolve/reverse/?identifier=F&amp;date=D       │
+│                                                         │
+│  The test verifies that families were computed           │
+│  correctly based on the events sent in Phase 1.         │
+└─────────────────────────────────────────────────────────┘
+</div></code></pre>
+<h3 id="42-api-endpoints-you-must-implement">4.2 API Endpoints You Must Implement</h3>
+<h4 id="setup">Setup</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/setup/</code></td>
+<td>Ensure all reference data (countries, code types) exists. Return HTTP 200 when ready.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="events-core">Events (Core)</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/events/</code></td>
+<td>List all events</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/events/</code></td>
+<td>Create an event with transitions</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/events/{id}/</code></td>
+<td>Get a single event</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/api/events/{id}/</code></td>
+<td>Delete an event (rollback its effects)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Event creation payload example:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"iso_country_code"</span>: <span class="hljs-string">"PL"</span>,
+  <span class="hljs-attr">"transitions_write"</span>: [
+    {
+      <span class="hljs-attr">"code_type_id"</span>: <span class="hljs-string">"IPC"</span>,
+      <span class="hljs-attr">"type"</span>: <span class="hljs-string">"INTRO"</span>,
+      <span class="hljs-attr">"date"</span>: <span class="hljs-string">"2023-01-15"</span>,
+      <span class="hljs-attr">"introduction_code"</span>: <span class="hljs-number">1001</span>
+    }
+  ]
+}
+</div></code></pre>
+<p><strong>Chain event payload example (linking two codes):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"iso_country_code"</span>: <span class="hljs-string">"PL"</span>,
+  <span class="hljs-attr">"transitions_write"</span>: [
+    {
+      <span class="hljs-attr">"code_type_id"</span>: <span class="hljs-string">"IPC"</span>,
+      <span class="hljs-attr">"type"</span>: <span class="hljs-string">"INTRO"</span>,
+      <span class="hljs-attr">"date"</span>: <span class="hljs-string">"2023-06-01"</span>,
+      <span class="hljs-attr">"introduction_code"</span>: <span class="hljs-number">1002</span>
+    },
+    {
+      <span class="hljs-attr">"code_type_id"</span>: <span class="hljs-string">"IPC"</span>,
+      <span class="hljs-attr">"type"</span>: <span class="hljs-string">"chain"</span>,
+      <span class="hljs-attr">"date"</span>: <span class="hljs-string">"2023-06-01"</span>,
+      <span class="hljs-attr">"introduction_code"</span>: <span class="hljs-number">1002</span>,
+      <span class="hljs-attr">"discontinuation_code"</span>: <span class="hljs-number">1001</span>
+    },
+    {
+      <span class="hljs-attr">"code_type_id"</span>: <span class="hljs-string">"IPC"</span>,
+      <span class="hljs-attr">"type"</span>: <span class="hljs-string">"DISCONT"</span>,
+      <span class="hljs-attr">"date"</span>: <span class="hljs-string">"2023-06-01"</span>,
+      <span class="hljs-attr">"discontinuation_code"</span>: <span class="hljs-number">1001</span>
+    }
+  ]
+}
+</div></code></pre>
+<h4 id="product-families">Product Families</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/product-families/</code></td>
+<td>List all product families</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/product-families/{id}/</code></td>
+<td>Get a product family with its generations and links</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/product-families/recompute/</code></td>
+<td>Trigger family recomputation</td>
+</tr>
+</tbody>
+</table>
+<h4 id="resolution">Resolution</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/resolve/</code></td>
+<td>Resolve a code to its family. Query params: <code>code</code>, <code>code_type</code>, <code>country</code>, <code>date</code></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/resolve/reverse/</code></td>
+<td>Reverse resolve a family to its codes. Query params: <code>identifier</code>, <code>date</code></td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/api/resolve/bulk/</code></td>
+<td>Bulk resolve multiple codes at once</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-validation-requirements">4.3 Validation Requirements</h3>
+<p>Your API <strong>must reject</strong> (HTTP 400) the following invalid events:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Invalid Scenario</th>
+<th>Why It's Wrong</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Double introduction of the same code</td>
+<td>The code is already active — introducing it again creates overlapping generations</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Overlapping generation (intro at earlier date while another generation exists)</td>
+<td>Time intervals for the same code must not overlap</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Double discontinuation</td>
+<td>The code has already been discontinued</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Chain referencing a non-existing discontinuation code</td>
+<td>The old product doesn't exist in the system</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Chain referencing a non-existing introduction code</td>
+<td>The new product doesn't exist in the system</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Discontinuation of a never-introduced code</td>
+<td>Cannot discontinue something that was never introduced</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Chain missing required <code>discontinuation_code</code> field</td>
+<td>Structurally invalid</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Introduction missing required <code>introduction_code</code> field</td>
+<td>Structurally invalid</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Discontinuation missing required <code>discontinuation_code</code> field</td>
+<td>Structurally invalid</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Chain where <code>introduction_code == discontinuation_code</code></td>
+<td>A code cannot replace itself</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Invalid country code</td>
+<td>Reference data does not exist</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Invalid code type</td>
+<td>Reference data does not exist</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Missing date</td>
+<td>Structurally invalid</td>
+</tr>
+</tbody>
+</table>
+<h3 id="44-family-computation-logic">4.4 Family Computation Logic</h3>
+<p>After all events are ingested and the recompute endpoint is called, your system must:</p>
+<ol>
+<li>Collect all code transitions, grouped by country and code type.</li>
+<li>Sort transitions chronologically (by date), with tie-breaking: Introductions first, then chains, then Discontinuations.</li>
+<li>Build a directed graph where:
+<ul>
+<li>Each <strong>Introduction</strong> creates a new node (generation).</li>
+<li>Each <strong>Chain</strong> creates an edge between two nodes (linking predecessor to successor).</li>
+<li>Each <strong>Discontinuation</strong> sets the end date on an existing node.</li>
+</ul>
+</li>
+<li>Identify <strong>weakly connected components</strong> in the graph — each component is a product family.</li>
+<li>Persist the families, generations, and links.</li>
+</ol>
+<h3 id="45-what-success-looks-like">4.5 What Success Looks Like</h3>
+<p>When the test script runs against your API:</p>
+<ol>
+<li><strong>Setup completes</strong> — the test calls <code>POST /api/setup/</code> and receives HTTP 200, confirming reference data is ready.</li>
+<li><strong>Events are ingested</strong> — valid events return <code>201 Created</code>, invalid events return <code>400 Bad Request</code>.</li>
+<li><strong>Families are recomputed</strong> — the recompute endpoint triggers the graph computation.</li>
+<li><strong>Resolution queries succeed</strong> — given a code, date, and country, the API returns the correct family identifier; given a family identifier and date, the API returns the correct active codes.</li>
+</ol>
+<h3 id="46-getting-started">4.6 Getting Started</h3>
+<ol>
+<li>Set up a web server listening on <code>http://localhost:8080</code>.</li>
+<li>Implement the event ingestion endpoint with full validation logic.</li>
+<li>Implement the family recomputation engine.</li>
+<li>Implement the resolution endpoints.</li>
+<li>Run the test script against your server and iterate until all tests pass.</li>
+</ol>
+<pre class="hljs"><code><div>python test_api.py --base-url http://localhost:8080 --total 100 --countries PL DE US JP CN --code-type-id IPC
+</div></code></pre>
+<p>Good luck!</p>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5050:5050"
+    volumes:
+      - .:/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

@@ -1,6 +1,6 @@
 """
 Adapter: a Flask server that proxies the student-facing API
-to the Django chains backend.
+to the Django demand forecasting backend.
 
 The test script (test_api.py) calls this server on port 5050.
 Your job is to implement each route so that it correctly forwards

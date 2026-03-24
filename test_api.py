@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for the Chains case study.
+Test script for the Demand Forecasting case study.
 
 Calls your server's API to:
   1. Setup reference data (POST /api/setup/)
@@ -364,13 +364,13 @@ def phase_queries():
 def main():
     global BASE_URL
 
-    parser = argparse.ArgumentParser(description="Chains API test script")
+    parser = argparse.ArgumentParser(description="Demand Forecasting API test script")
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help=f"Server URL (default: {DEFAULT_BASE_URL})")
     parser.add_argument("--total", type=int, default=DEFAULT_TOTAL, help=f"Number of families to create (default: {DEFAULT_TOTAL})")
     args = parser.parse_args()
     BASE_URL = args.base_url
 
-    print(f"Chains API Test — target: {BASE_URL}")
+    print(f"Demand Forecasting API Test — target: {BASE_URL}")
     print(f"Families: {args.total}  Countries: {COUNTRIES}  CodeType: {CODE_TYPE_ID}")
 
     phase_setup()

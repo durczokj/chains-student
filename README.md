@@ -1,4 +1,4 @@
-# Chains — Case Study
+# Demand Forecasting — Case Study
 
 Read [CASE_STUDY.md](CASE_STUDY.md) for the full problem description.
 

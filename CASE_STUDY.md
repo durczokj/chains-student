@@ -1,4 +1,4 @@
-# Case Study: Product Code Families — Demand Forecasting Continuity
+# Case Study: Demand Forecasting — Product Code Continuity
 
 ## 1. Business Background
 
@@ -228,44 +228,13 @@ You will build a **REST API** that implements the Chains system. A provided **te
 
 The test script interacts with your API in three phases:
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    PHASE 0: SETUP                       │
-│  The test script calls POST /api/setup/.                │
-│  Your server must ensure that all required reference    │
-│  data (countries and code types from Section 2) exists  │
-│  in the database and return HTTP 200.                   │
-└────────────────────────┬────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────┐
-│                  PHASE 1: EVENT INGESTION               │
-│  The test script sends ~100 events (POST requests).     │
-│  Each event contains one or more code transitions.      │
-│  Some events are valid, some are deliberately invalid.  │
-│                                                         │
-│  Your API must:                                         │
-│   ✓ Accept valid events  → return HTTP 201              │
-│   ✗ Reject invalid events → return HTTP 400             │
-│                                                         │
-│  After all events are sent, the test triggers family    │
-│  recomputation via a POST to the recompute endpoint.    │
-└────────────────────────┬────────────────────────────────┘
-                         │
-                         ▼
-┌─────────────────────────────────────────────────────────┐
-│                PHASE 2: FAMILY QUERIES                  │
-│  The test script queries your API:                      │
-│                                                         │
-│  1. Resolve: code + date + country → family ID          │
-│     GET /api/resolve/?code=X&code_type=T&country=C&date=D│
-│                                                         │
-│  2. Reverse: family ID + date → list of active codes    │
-│     GET /api/resolve/reverse/?identifier=F&date=D       │
-│                                                         │
-│  The test verifies that families were computed           │
-│  correctly based on the events sent in Phase 1.         │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    P0["<b>PHASE 0: SETUP</b><br/><br/>The test script calls POST /api/setup/.<br/>Your server must ensure that all required reference<br/>data (countries and code types from Section 2) exists<br/>in the database and return HTTP 200."]
+    P1["<b>PHASE 1: EVENT INGESTION</b><br/><br/>The test script sends ~100 events (POST requests).<br/>Each event contains one or more code transitions.<br/>Some events are valid, some are deliberately invalid.<br/><br/>Your API must:<br/>✓ Accept valid events → return HTTP 201<br/>✗ Reject invalid events → return HTTP 400<br/><br/>After all events are sent, the test triggers family<br/>recomputation via a POST to the recompute endpoint."]
+    P2["<b>PHASE 2: FAMILY QUERIES</b><br/><br/>The test script queries your API:<br/><br/>1. Resolve: code + date + country → family ID<br/>&ensp;&ensp; GET /api/resolve/?code=X&amp;code_type=T&amp;country=C&amp;date=D<br/><br/>2. Reverse: family ID + date → list of active codes<br/>&ensp;&ensp; GET /api/resolve/reverse/?identifier=F&amp;date=D<br/><br/>The test verifies that families were computed<br/>correctly based on the events sent in Phase 1."]
+
+    P0 --> P1 --> P2
 ```
 
 ### 4.2 API Endpoints You Must Implement

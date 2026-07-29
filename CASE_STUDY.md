@@ -371,7 +371,7 @@ to git.
 > ⚠️ **Do not use this server as the backend for your assignment.**
 >
 > The whole point of the case study is that **you** build the API. The test
-> script must run against **your** server on `localhost:8080`. Pointing it at
+> script must run against **your** server on `localhost:5050`. Pointing it at
 > `chains.durczok.ovh` would mean all the work is being done by someone else's
 > code — that defeats the purpose of the exercise and will not count as a valid
 > submission.
@@ -394,14 +394,14 @@ See `notebooks/server_example.py` for a fuller example.
 
 ### 4.7 Getting Started
 
-1. Set up a web server listening on `http://localhost:8080`.
+1. Set up a web server listening on `http://localhost:5050`.
 2. Implement the event ingestion endpoint with full validation logic.
 3. Implement the family recomputation engine.
 4. Implement the resolution endpoints.
 5. Run the test script against your server and iterate until all tests pass.
 
 ```bash
-python test_api.py --base-url http://localhost:8080 --total 100 --countries PL DE US JP CN --code-type-id IPC
+python test_api.py --base-url http://localhost:5050 --total 100 --countries PL DE US JP CN --code-type-id IPC
 ```
 
 Good luck!

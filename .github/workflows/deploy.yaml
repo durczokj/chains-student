@@ -44,6 +44,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: deploy/site.Dockerfile
           push: true
           tags: |
             durczokj/chains-student:${{ steps.vars.outputs.tag }}

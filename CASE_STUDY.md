@@ -355,7 +355,44 @@ When the test script runs against your API:
 3. **Families are recomputed** — the recompute endpoint triggers the graph computation.
 4. **Resolution queries succeed** — given a code, date, and country, the API returns the correct family identifier; given a family identifier and date, the API returns the correct active codes.
 
-### 4.6 Getting Started
+### 4.6 Reference server (for inspiration only)
+
+A working example of the Chains system is hosted at
+`https://chains.durczok.ovh`. It implements the same API surface you are being
+asked to build and ships with a browsable UI so you can **explore the data
+model, poke at endpoints, and see what "correct" behaviour looks like** before
+(or while) writing your own implementation.
+
+If you would like to play with it, reach out to me directly and I will share a
+username and password. The server uses **HTTP Basic authentication** on every
+request — credentials will be provided out-of-band, so please never commit them
+to git.
+
+> ⚠️ **Do not use this server as the backend for your assignment.**
+>
+> The whole point of the case study is that **you** build the API. The test
+> script must run against **your** server on `localhost:8080`. Pointing it at
+> `chains.durczok.ovh` would mean all the work is being done by someone else's
+> code — that defeats the purpose of the exercise and will not count as a valid
+> submission.
+
+Treat the reference server purely as a sandbox for learning and inspiration.
+
+If you do want to explore it programmatically (e.g. from a notebook), the
+authentication pattern with `requests` looks like this:
+
+```python
+import os, requests
+
+BACKEND = requests.Session()
+BACKEND.auth = (os.environ["CHAINS_USERNAME"], os.environ["CHAINS_PASSWORD"])
+
+r = BACKEND.get("https://chains.durczok.ovh/api/events/")
+```
+
+See `notebooks/server_example.py` for a fuller example.
+
+### 4.7 Getting Started
 
 1. Set up a web server listening on `http://localhost:8080`.
 2. Implement the event ingestion endpoint with full validation logic.

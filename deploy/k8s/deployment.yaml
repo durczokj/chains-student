@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chains-student
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chains-student
+  template:
+    metadata:
+      labels:
+        app: chains-student
+    spec:
+      containers:
+        - name: chains-student
+          image: durczokj/chains-student:__IMAGE_TAG__
+          ports:
+            - containerPort: 5050
+          readinessProbe:
+            tcpSocket: { port: 5050 }
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket: { port: 5050 }
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests: { cpu: 10m, memory: 32Mi }
+            limits:   { cpu: 200m, memory: 128Mi }

@@ -2,22 +2,38 @@
 Example adapter: a Flask server that proxies the student-facing API
 to the Django chains backend.
 
-The test script calls this server on port 5000.
-This server translates requests and forwards them to the Django app
-running on port 8080.
+The test script calls this server on port 5050.
+This server translates requests and forwards them to the Django app.
 
 Run:
-    1. Start Django:  python manage.py runserver 8080
-    2. Start this:    python adapter.py
-    3. Run tests:     cd ../chains-student && python test_api.py
+    1. export CHAINS_USERNAME=... CHAINS_PASSWORD=...
+    2. python server_example.py
+    3. In another terminal: python ../test_api.py
+
+Configuration (all via env vars):
+    CHAINS_URL       backend base URL (default: https://chains.durczok.ovh)
+    CHAINS_USERNAME  HTTP Basic auth username
+    CHAINS_PASSWORD  HTTP Basic auth password
 """
+
+import os
 
 import requests
 from flask import Flask, Response, jsonify, request
 
 app = Flask(__name__)
 
-DJANGO_URL = "http://durczok.ovh/chains"
+# ── Backend configuration ─────────────────────────────────────────────
+# The chains backend requires HTTP Basic authentication on every request.
+# Credentials will be provided to you separately — do not commit them to git.
+DJANGO_URL = os.environ.get("CHAINS_URL", "https://chains.durczok.ovh").rstrip("/")
+CHAINS_USERNAME = os.environ.get("CHAINS_USERNAME", "")
+CHAINS_PASSWORD = os.environ.get("CHAINS_PASSWORD", "")
+
+# One shared Session — attach auth once, reuse the TCP connection.
+BACKEND = requests.Session()
+if CHAINS_USERNAME and CHAINS_PASSWORD:
+    BACKEND.auth = (CHAINS_USERNAME, CHAINS_PASSWORD)
 
 COUNTRIES = [
     ("PL", "Poland"),
@@ -34,17 +50,17 @@ CODE_TYPES = [
 
 
 def _proxy_get(path: str, params: dict | None = None) -> Response:
-    r = requests.get(f"{DJANGO_URL}{path}", params=params)
+    r = BACKEND.get(f"{DJANGO_URL}{path}", params=params)
     return Response(r.content, status=r.status_code, content_type=r.headers.get("Content-Type", "application/json"))
 
 
 def _proxy_post(path: str, data: dict | None = None) -> Response:
-    r = requests.post(f"{DJANGO_URL}{path}", json=data)
+    r = BACKEND.post(f"{DJANGO_URL}{path}", json=data)
     return Response(r.content, status=r.status_code, content_type=r.headers.get("Content-Type", "application/json"))
 
 
 def _proxy_delete(path: str) -> Response:
-    r = requests.delete(f"{DJANGO_URL}{path}")
+    r = BACKEND.delete(f"{DJANGO_URL}{path}")
     return Response(r.content, status=r.status_code, content_type=r.headers.get("Content-Type", "application/json"))
 
 
@@ -55,7 +71,7 @@ def setup():
     """Reset state and seed countries and code types in the Django backend."""
     # Delete all existing events
     while True:
-        r = requests.get(f"{DJANGO_URL}/api/events/", params={"page_size": 100})
+        r = BACKEND.get(f"{DJANGO_URL}/api/events/", params={"page_size": 100})
         if r.status_code != 200:
             break
         data = r.json()
@@ -63,19 +79,19 @@ def setup():
         if not events:
             break
         for ev in events:
-            requests.delete(f"{DJANGO_URL}/api/events/{ev['id']}/")
+            BACKEND.delete(f"{DJANGO_URL}/api/events/{ev['id']}/")
 
     # Ensure countries exist
     for code, name in COUNTRIES:
-        r = requests.get(f"{DJANGO_URL}/api/countries/{code}/")
+        r = BACKEND.get(f"{DJANGO_URL}/api/countries/{code}/")
         if r.status_code == 404:
-            requests.post(f"{DJANGO_URL}/api/countries/", json={"code": code, "name": name})
+            BACKEND.post(f"{DJANGO_URL}/api/countries/", json={"code": code, "name": name})
 
     # Ensure code types exist
     for ct_id, ct_type in CODE_TYPES:
-        r = requests.get(f"{DJANGO_URL}/api/code-types/{ct_id}/")
+        r = BACKEND.get(f"{DJANGO_URL}/api/code-types/{ct_id}/")
         if r.status_code == 404:
-            requests.post(f"{DJANGO_URL}/api/code-types/", json={"id": ct_id, "type": ct_type})
+            BACKEND.post(f"{DJANGO_URL}/api/code-types/", json={"id": ct_id, "type": ct_type})
 
     return jsonify({"status": "ok"}), 200
 

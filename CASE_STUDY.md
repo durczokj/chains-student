@@ -355,7 +355,31 @@ When the test script runs against your API:
 3. **Families are recomputed** — the recompute endpoint triggers the graph computation.
 4. **Resolution queries succeed** — given a code, date, and country, the API returns the correct family identifier; given a family identifier and date, the API returns the correct active codes.
 
-### 4.6 Getting Started
+### 4.6 Authentication (optional)
+
+The `test_api.py` script only talks to **your** server on `localhost:5050`, so
+no authentication is involved on that hop and it is **not required** to pass
+the assignment.
+
+If you develop against the **shared demo backend** at
+`https://chains.durczok.ovh` (instead of running Django locally), be aware that
+it requires **HTTP Basic authentication** on every request. Credentials will
+be provided to you separately — never commit them to git.
+
+Pattern (using `requests`):
+
+```python
+import os, requests
+
+BACKEND = requests.Session()
+BACKEND.auth = (os.environ["CHAINS_USERNAME"], os.environ["CHAINS_PASSWORD"])
+
+r = BACKEND.get("https://chains.durczok.ovh/api/events/")
+```
+
+See `notebooks/server_example.py` for the full reference implementation.
+
+### 4.7 Getting Started
 
 1. Set up a web server listening on `http://localhost:8080`.
 2. Implement the event ingestion endpoint with full validation logic.

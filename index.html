@@ -411,13 +411,11 @@
     <p>Preserve forecasting continuity when product codes change.
        Build a REST API that links old and new codes into product families.</p>
     <div class="hero-actions">
-      <a href="http://durczok.ovh/chains/" class="btn btn-primary" target="_blank">
-        Open Live API &rarr;
-      </a>
-      <a href="https://github.com/durczokj/chains-student" class="btn btn-outline" target="_blank">
+      <a href="https://github.com/durczokj/chains-student" class="btn btn-primary" target="_blank">
         GitHub Repository
       </a>
       <a href="#example" class="btn btn-outline">See an Example</a>
+      <a href="#reference" class="btn btn-outline">Reference Server</a>
     </div>
   </header>
 
@@ -865,12 +863,96 @@ erDiagram
     </div>
   </section>
 
+  <!-- Family Computation -->
+  <section>
+    <div class="container">
+      <h2>Family Computation Logic</h2>
+      <p>After all events are ingested and the recompute endpoint is called, your system must:</p>
+      <ol>
+        <li>Collect all code transitions, grouped by country and code type.</li>
+        <li>Sort transitions chronologically (by date), with tie-breaking:
+            <strong>Introductions</strong> first, then <strong>Chains</strong>, then <strong>Discontinuations</strong>.</li>
+        <li>Build a directed graph where:
+          <ul>
+            <li>Each <strong>Introduction</strong> creates a new node (generation).</li>
+            <li>Each <strong>Chain</strong> creates an edge between two nodes (linking predecessor to successor).</li>
+            <li>Each <strong>Discontinuation</strong> sets the end date on an existing node.</li>
+          </ul>
+        </li>
+        <li>Identify <strong>weakly connected components</strong> in the graph &mdash; each component is a product family.</li>
+        <li>Persist the families, generations, and links.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Reference Server -->
+  <section id="reference">
+    <div class="container">
+      <h2>Reference Server <small style="color:var(--muted);font-weight:400;">(for inspiration only)</small></h2>
+      <p>
+        A working example of the Chains system is hosted at
+        <code class="inline-code">https://chains.durczok.ovh</code>. It implements the same API surface you
+        are being asked to build and ships with a browsable UI so you can
+        <strong>explore the data model, poke at endpoints, and see what &ldquo;correct&rdquo; behaviour looks like</strong>
+        before (or while) writing your own implementation.
+      </p>
+      <p>
+        If you would like to play with it, reach out to me directly and I will share a username
+        and password. The server uses <strong>HTTP Basic authentication</strong> on every request &mdash;
+        credentials will be provided out-of-band, so please never commit them to git.
+      </p>
+
+      <div class="compare-box bad" style="margin:1.5rem 0;">
+        <h4>&#9888;&#65039; Do not use this server as the backend for your assignment</h4>
+        <p style="color:var(--muted);font-size:0.9rem;margin:0;">
+          The whole point of the case study is that <strong>you</strong> build the API. The test script
+          must run against <strong>your</strong> server on <code class="inline-code">localhost:5050</code>.
+          Pointing it at <code class="inline-code">chains.durczok.ovh</code> would mean all the work is being done
+          by someone else's code &mdash; that defeats the purpose of the exercise and will not count as
+          a valid submission.
+        </p>
+      </div>
+
+      <p>Treat the reference server purely as a sandbox for learning and inspiration.</p>
+
+      <p>
+        If you do want to explore it programmatically (e.g. from a notebook), the authentication
+        pattern with <code class="inline-code">requests</code> looks like this:
+      </p>
+<pre><code>import os, requests
+
+BACKEND = requests.Session()
+BACKEND.auth = (os.environ["CHAINS_USERNAME"], os.environ["CHAINS_PASSWORD"])
+
+r = BACKEND.get("https://chains.durczok.ovh/api/events/")</code></pre>
+      <p>
+        See <code class="inline-code">notebooks/server_example.py</code> for a fuller example.
+      </p>
+    </div>
+  </section>
+
+  <!-- Getting Started -->
+  <section>
+    <div class="container">
+      <h2>Getting Started</h2>
+      <ol>
+        <li>Set up a web server listening on <code class="inline-code">http://localhost:5050</code>.</li>
+        <li>Implement the event ingestion endpoint with full validation logic.</li>
+        <li>Implement the family recomputation engine.</li>
+        <li>Implement the resolution endpoints.</li>
+        <li>Run the test script against your server and iterate until all tests pass:</li>
+      </ol>
+<pre><code>python test_api.py --base-url http://localhost:5050 --total 100</code></pre>
+      <p>Good luck!</p>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
     <p>
-      <a href="http://durczok.ovh/chains/" target="_blank">Live API</a>
-      &nbsp;&middot;&nbsp;
       <a href="https://github.com/durczokj/chains-student" target="_blank">GitHub Repository</a>
+      &nbsp;&middot;&nbsp;
+      <a href="#reference">Reference Server</a>
       &nbsp;&middot;&nbsp;
       Demand Forecasting &mdash; Case Study
     </p>

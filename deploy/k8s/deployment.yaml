@@ -17,15 +17,25 @@ spec:
         - name: chains-student
           image: durczokj/chains-student:__IMAGE_TAG__
           ports:
-            - containerPort: 5050
+            - containerPort: 80
           readinessProbe:
-            tcpSocket: { port: 5050 }
+            httpGet:
+              path: /
+              port: 80
+              httpHeaders:
+                - name: Host
+                  value: chains-student.durczok.ovh
             initialDelaySeconds: 3
             periodSeconds: 10
           livenessProbe:
-            tcpSocket: { port: 5050 }
+            httpGet:
+              path: /
+              port: 80
+              httpHeaders:
+                - name: Host
+                  value: chains-student.durczok.ovh
             initialDelaySeconds: 10
             periodSeconds: 20
           resources:
-            requests: { cpu: 10m, memory: 32Mi }
-            limits:   { cpu: 200m, memory: 128Mi }
+            requests: { cpu: 10m, memory: 16Mi }
+            limits:   { cpu: 100m, memory: 64Mi }
